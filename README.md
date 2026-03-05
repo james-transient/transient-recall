@@ -5,7 +5,6 @@ Transient Recall (TR) is a self-hosted context continuity layer for AI coding an
 ## Website
 
 - [Docs (TR setup & workflow)](https://transientintelligence.com/docs/transient-recall)
-- [Create account](https://transientintelligence.com/auth/register) · [Log in](https://transientintelligence.com/auth/login)
 
 ## Why TR
 
