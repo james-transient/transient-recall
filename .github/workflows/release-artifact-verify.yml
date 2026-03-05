@@ -1,0 +1,68 @@
+name: TR Artifact Verify
+
+on:
+  workflow_dispatch:
+    inputs:
+      tr_version:
+        description: "Pinned artifact version tag (e.g. v0.1.0)"
+        required: true
+        default: "v0.1.0"
+      tr_image:
+        description: "Container image repository"
+        required: true
+        default: "ghcr.io/transient-intelligence/transient-recall-api"
+
+jobs:
+  verify-artifact:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      TR_VERSION: ${{ github.event.inputs.tr_version }}
+      TR_IMAGE: ${{ github.event.inputs.tr_image }}
+      TR_PORT: "18090"
+      POSTGRES_PORT: "15432"
+      TR_STACK_NAME: "tr-artifact-verify"
+      TR_PROJECT: "ci-artifact-verify"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Verify unauthenticated image pull
+        run: |
+          docker logout ghcr.io || true
+          docker pull "${TR_IMAGE}:${TR_VERSION}"
+
+      - name: Run one-command installer
+        run: |
+          chmod +x scripts/install-artifact.sh
+          bash scripts/install-artifact.sh | tee install-output.log
+
+      - name: Verify installer output includes MCP + rule
+        run: |
+          rg "MCP URL:" install-output.log
+          rg "tr-continuity\\.mdc" install-output.log
+
+      - name: Verify health endpoint
+        run: curl -sf "http://localhost:${TR_PORT}/healthz"
+
+      - name: Run smoke against installed artifact
+        env:
+          TR_BASE_URL: http://localhost:18090
+        run: npm run smoke
+
+      - name: Dump logs on failure
+        if: failure()
+        run: docker compose -p "${TR_STACK_NAME}" -f docker-compose.artifact.yml logs
+
+      - name: Tear down
+        if: always()
+        run: docker compose -p "${TR_STACK_NAME}" -f docker-compose.artifact.yml down -v

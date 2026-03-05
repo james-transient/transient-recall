@@ -1,0 +1,33 @@
+{
+  "name": "transient-recall-api",
+  "version": "0.1.0",
+  "private": false,
+  "type": "module",
+  "description": "Transient Recall (TR) MCP API service",
+  "main": "src/index.mjs",
+  "scripts": {
+    "dev": "node --watch src/index.mjs",
+    "start": "node src/index.mjs",
+    "install:local": "bash scripts/install.sh",
+    "install:artifact": "bash scripts/install-artifact.sh",
+    "install:auto": "bash scripts/install.sh --all",
+    "check": "node --check src/index.mjs",
+    "test:automation": "node scripts/automation-regression-test.mjs",
+    "migrate": "node scripts/migrate.mjs",
+    "smoke": "node scripts/smoke-test.mjs",
+    "checkpoint:commit": "node scripts/commit-checkpoint.mjs",
+    "checkpoint:auto": "node scripts/auto-checkpoint-daemon.mjs",
+    "checkpoint:auto:once": "node scripts/auto-checkpoint-daemon.mjs --once=true",
+    "checkpoint:backfill": "node scripts/backfill-commits.mjs",
+    "power:start": "bash scripts/power-mode.sh start",
+    "power:stop": "bash scripts/power-mode.sh stop",
+    "power:status": "bash scripts/power-mode.sh status",
+    "power:restart": "bash scripts/power-mode.sh restart",
+    "mcp:sync": "bash scripts/sync-cursor-mcp.sh"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.17.4",
+    "dotenv": "^16.6.1",
+    "pg": "^8.16.3"
+  }
+}

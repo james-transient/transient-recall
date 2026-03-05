@@ -1,0 +1,13 @@
+node_modules
+.env
+.env.*
+!.env.example
+.git
+.gitignore
+*.log
+.DS_Store
+**/._*
+**/.DS_Store
+coverage
+dist
+.cursor

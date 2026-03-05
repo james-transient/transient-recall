@@ -2,17 +2,19 @@
 
 ## Reporting a Vulnerability
 
-If you discover a security issue, do not create a public issue.
+Do not open public issues for security vulnerabilities.
 
-Please report privately to: **security@transientintelligence.com**
+Report privately to: `security@transientintelligence.com`
 
 Include:
 
-- Description of the issue
+- Clear description of the issue
 - Reproduction steps
-- Expected versus actual behavior
-- Potential impact
+- Expected vs actual behavior
+- Impact assessment
+- Any mitigations/workarounds tested
 
-## Scope
+## Scope and Safety
 
-Do not include secrets, private endpoints, account credentials, or proprietary internals in issues or pull requests.
+- Never include secrets, private tokens, customer data, or internal-only infrastructure information in reports.
+- We will acknowledge receipt and provide remediation status updates.

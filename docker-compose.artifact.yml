@@ -1,0 +1,46 @@
+services:
+  postgres:
+    image: postgres:${POSTGRES_IMAGE_TAG:-16}
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-tr}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - tr_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}"]
+      interval: 2s
+      timeout: 5s
+      retries: 20
+
+  tr-api:
+    image: ${TR_IMAGE:-ghcr.io/transient-intelligence/transient-recall-api}:${TR_VERSION:-v0.1.0}
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      PORT: 8090
+      TR_DEPLOYMENT_MODE: ${TR_DEPLOYMENT_MODE:-local}
+      TR_AUTH_STRICT: ${TR_AUTH_STRICT:-false}
+      MCP_EDGE_BEARER_TOKEN: ${MCP_EDGE_BEARER_TOKEN:-}
+      DATABASE_URL: postgres://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-tr}
+      TR_DEFAULT_SUBJECT: ${TR_DEFAULT_SUBJECT:-local-user}
+      TR_DEFAULT_TENANT: ${TR_DEFAULT_TENANT:-public}
+      TR_DEDUPE_WINDOW_SEC: ${TR_DEDUPE_WINDOW_SEC:-0}
+      TR_STALE_CHECKPOINT_MINUTES: ${TR_STALE_CHECKPOINT_MINUTES:-20}
+      NODE_ENV: production
+    ports:
+      - "${TR_PORT:-8090}:8090"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8090/healthz"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+      start_period: 10s
+
+volumes:
+  tr_postgres_data:

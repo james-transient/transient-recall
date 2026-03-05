@@ -128,7 +128,7 @@ To backfill past commits into the same project stream, run from your repo direct
 docker run --rm \
   -v "${PWD}:/repo" \
   -e TR_MCP_BASE_URL="http://host.docker.internal:8090" \
-  ghcr.io/jamesatyosage/transient-recall-api:v0.1.0 \
+  ghcr.io/james-transient/transient-recall-api:v0.1.0 \
   node scripts/backfill-commits.mjs \
     --project="my-team-history" \
     --all_history=true \
