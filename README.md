@@ -5,7 +5,7 @@ Every new chat window costs you **twice**.
 **10–15 minutes** rebuilding what you were working on, what you tried, and why your decisions made sense.<sup>1</sup>  
 **Tokens wasted** getting your AI back up to speed before it can actually help.
 
-**Transient Recall** stores your full working context locally (goals, decisions, blockers, code state) in Postgres. Your AI calls `tr_resume` and continues from your last checkpoint. No re-explaining. Ever.
+**Transient Recall** stores your full working context locally (goals, decisions, blockers, code state) in Postgres. Your AI calls `tr_resume` and continues from your last checkpoint. No re-explaining.
 
 ![TR checkpoint and resume in action](demo/tr-checkpoint-demo.gif)
 
