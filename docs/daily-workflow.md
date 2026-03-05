@@ -1,26 +1,28 @@
 # TR Daily Workflow
 
-Recommended cadence to keep continuity reliable with low overhead.
+Recommended session rhythm to keep AI continuity reliable without adding overhead. Full docs: [transientintelligence.com/docs/transient-recall/daily-workflow](https://transientintelligence.com/docs/transient-recall/daily-workflow)
 
 ## Session start
 
-```text
+```
 Call tr_resume(project) and tr_status(project) first, then summarize my current goal.
 ```
 
 ## During work
 
-- Checkpoint on major decisions and task-boundary completions.
+- Checkpoint on major decisions and task boundary completions.
 - Include `current_goal`, `context_capsule`, and `next_actions`.
 - When code changes, include `files_touched` and concise `code_refs`.
 
 ## Session end
 
-```text
+```
 Call tr_checkpoint with blockers + next_actions before final response.
 ```
 
-## Minimal checkpoint shape
+This creates a clean handoff point for the next session.
+
+## Minimal checkpoint payload
 
 ```json
 {
@@ -34,3 +36,22 @@ Call tr_checkpoint with blockers + next_actions before final response.
   }
 }
 ```
+
+## High-value payload contract
+
+For each checkpoint, include when relevant:
+
+- `current_goal` — one clear sentence of the objective now
+- `context_capsule` — concise "what changed + why"
+- `decision_rationale` — reason for the chosen approach
+- `next_actions` — explicit next 1-3 actions
+- `blockers` — open blockers
+- `files_touched` — when code or files changed
+- `code_refs` — concise references to changed code
+- `commit_sha`, `commit_subject`, `branch` — from git (see [install-verify](install-verify.md#3-add-continuity-instructions))
+
+## Session cadence (always)
+
+- **Start:** `tr_resume` + `tr_status`, then set/confirm current goal
+- **Mid-session:** checkpoint at meaningful decision boundaries
+- **End-session:** checkpoint with blockers and next actions before final response
