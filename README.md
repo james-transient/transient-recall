@@ -29,7 +29,7 @@ Pulls and starts the pinned TR Docker image with Postgres, runs database migrati
 
 ## Step 2 — Configure your MCP client
 
-Use the printed MCP config in your client settings, then reload MCP servers. Cursor example:
+Use the printed MCP config in your client settings, then reload MCP servers. Cursor: add to `.cursor/mcp.json` in your workspace root, or `~/.cursor/mcp.json` for global. Example:
 
 ```json
 {
@@ -50,7 +50,7 @@ Set `x-tr-project` to your repo or project name. Keep it stable across restarts 
 
 ## Step 3 — Add continuity instructions
 
-Paste the rule block from the install output into your AI agent. The agent creates rule files in `.cursor/rules/` (or your IDE's equivalent). Full rule content: [Install and verify](docs/install-verify.md#3-add-continuity-instructions).
+Paste the rule block from the install output into your AI agent. The agent creates rule files in `.cursor/rules/` (or your IDE's equivalent). If you missed the install output, the full rule content is in [Install and verify](docs/install-verify.md#3-add-continuity-instructions).
 
 ## Step 4 — Checkpoint
 

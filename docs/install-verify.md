@@ -12,7 +12,7 @@ This starts TR + Postgres, applies migrations, and prints MCP config/rule snippe
 
 ## 2) Configure your MCP client
 
-Use the printed MCP config in your client settings, then reload MCP servers. Cursor example (`.cursor/mcp.json`):
+Use the printed MCP config in your client settings, then reload MCP servers. Cursor: `.cursor/mcp.json` in workspace root, or `~/.cursor/mcp.json` for global. Example:
 
 ```json
 {
