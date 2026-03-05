@@ -7,6 +7,8 @@ Every new chat window costs you **twice**.
 
 **Transient Recall** stores your full working context locally (goals, decisions, blockers, code state) in Postgres. Your AI calls `tr_resume` and continues from your last checkpoint. No re-explaining. Ever.
 
+![TR checkpoint and resume in action](demo/tr-checkpoint-demo.gif)
+
 On first setup, index your Git history. TR backfills past commits into your project stream so your AI knows the full arc of the codebase from day one: why files exist, what was refactored and when, which bugs were fixed and how. The longer the history, the more grounded it gets.
 
 Because TR is MCP-based and project-scoped, it goes well beyond a single session. Drop into a second repo and TR tracks that context independently. Switch between Cursor, Claude Desktop, or any MCP-compatible tool and the same checkpoint is waiting. Hand a feature to a teammate and they resume from your last saved state instead of asking you to walk them through it. Run multiple AI tools across multiple repos at once, each one grounded in its own project history, none of them starting blind.
