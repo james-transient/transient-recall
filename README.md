@@ -2,11 +2,10 @@
 
 Transient Recall (TR) is a self-hosted context continuity layer for AI coding and knowledge workflows. It preserves project memory across sessions so agents can resume with consistent context.
 
-## What This Repository Includes
+## Website
 
-- Public installation and setup guidance
-- MCP connection and workflow patterns
-- Troubleshooting and operational notes
+- [Docs (TR setup & workflow)](https://transientintelligence.com/docs/transient-recall)
+- [Create account](https://transientintelligence.com/auth/register) · [Log in](https://transientintelligence.com/auth/login)
 
 ## Why TR
 
@@ -14,17 +13,24 @@ Transient Recall (TR) is a self-hosted context continuity layer for AI coding an
 - Reduces repeated onboarding and context loss
 - Supports multi-client MCP integration for developer workflows
 
-## Install (Artifact-Friendly)
+## Install
 
-Use your preferred installation path to run TR locally (Docker-based recommended). Ensure the TR MCP endpoint is reachable from your AI client, for example:
-
-```text
-http://localhost:8090/mcp
+```bash
+bash <(curl -fsSL https://transientintelligence.com/install/recall)
 ```
 
-## MCP Configuration Pattern
+This installs TR + Postgres, applies migrations, and provides MCP/rule snippets for continuity setup.
 
-Recommended server entry shape:
+## Verify service
+
+```text
+curl http://localhost:8090/healthz
+# {"status":"ok"}
+```
+
+If you use a custom host port (for example `TR_PORT=8092`), use that same port in your MCP URL.
+
+## MCP configuration
 
 ```json
 {
@@ -41,18 +47,54 @@ Recommended server entry shape:
 }
 ```
 
-## Daily Workflow (Minimal)
+Identity stability matters:
 
-1. Start your AI session and call status/resume.
-2. Work normally.
-3. Save key milestones with checkpoints.
-4. On next session, resume from timeline/context.
+- Keep `x-tr-project` stable across sessions.
+- Keep the tuple `x-tr-tenant`, `x-tr-subject`, `x-tr-project` unchanged to restore the same continuity stream.
+
+## Daily workflow
+
+1. Session start: call `tr_resume(project)` and `tr_status(project)`.
+2. During work: checkpoint on task boundaries and major decisions.
+3. Session end: checkpoint blockers and next actions.
+
+Minimal checkpoint payload fields:
+
+- `current_goal`
+- `context_capsule`
+- `decision_rationale`
+- `next_actions`
+- `files_touched` (when code changes)
+
+## Core MCP tools
+
+- `tr_checkpoint`
+- `tr_resume`
+- `tr_status`
+- `tr_timeline`
+- `tr_projects`
+- `tr_search_checkpoints`
+- `tr_blockers`
+- `tr_graph_view`
+- `tr_graph_diff`
+
+## Repository continuity options
+
+- Live continuity: ongoing `tr_checkpoint` calls via your AI client
+- Historical indexing: backfill existing git history into the same project stream
 
 ## Troubleshooting
 
-- **No data on resume:** confirm `x-tr-project` matches the active project.
-- **Connection refused:** verify TR is running and `url` points to the correct host port.
-- **Unexpected context switch:** confirm `x-tr-subject` and tenant headers are stable.
+- **TR tools not visible:** reload MCP servers and verify URL/port.
+- **Port conflict:** run install with `TR_PORT=<custom_port>` and align MCP URL.
+- **Empty resume:** confirm identity tuple matches previous sessions.
+- **Missing index after reinstall:** ensure you are connected to the same Postgres volume/stack.
+
+## Guides
+
+- [Install and verify](docs/install-verify.md)
+- [Daily workflow](docs/daily-workflow.md)
+- [Troubleshooting](docs/troubleshooting.md)
 
 ## Public-Safe Scope
 
