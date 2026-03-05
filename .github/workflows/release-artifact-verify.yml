@@ -10,7 +10,7 @@ on:
       tr_image:
         description: "Container image repository"
         required: true
-        default: "ghcr.io/transient-intelligence/transient-recall-api"
+        default: "ghcr.io/james-transient/transient-recall-api"
 
 jobs:
   verify-artifact:

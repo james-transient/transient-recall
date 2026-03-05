@@ -17,7 +17,7 @@ services:
       retries: 20
 
   tr-api:
-    image: ${TR_IMAGE:-ghcr.io/transient-intelligence/transient-recall-api}:${TR_VERSION:-v0.1.0}
+    image: ${TR_IMAGE:-ghcr.io/james-transient/transient-recall-api}:${TR_VERSION:-v0.1.0}
     restart: unless-stopped
     depends_on:
       postgres:

@@ -1,5 +1,8 @@
 # Solving AI Amnesia: Transient Recall MCP
 
+[![AGPL-3.0](https://img.shields.io/badge/License-AGPL%203.0-blue.svg)](LICENSE)
+[![Docker](https://img.shields.io/badge/docker-ghcr.io%2Fjames--transient%2Ftransient--recall--api-blue)](https://ghcr.io/james-transient/transient-recall-api)
+
 Every new chat window costs you **twice**.
 
 **10–15 minutes** rebuilding what you were working on, what you tried, and why your decisions made sense.<sup>1</sup>  
@@ -119,7 +122,7 @@ Run backfill from your repo directory. Use `--idempotency_scope=repo` when combi
 docker run --rm \
   -v "${PWD}:/repo" \
   -e TR_MCP_BASE_URL="http://host.docker.internal:8090" \
-  ghcr.io/jamesatyosage/transient-recall-api:v0.1.0 \
+  ghcr.io/james-transient/transient-recall-api:v0.1.0 \
   node scripts/backfill-commits.mjs \
     --project="my-team-history" \
     --all_history=true \
